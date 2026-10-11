@@ -16,8 +16,8 @@ window.PORTFOLIO_DATA = {
       tagline:
         "Software Engineer with ~5 years of progressive experience at WebiWork Technologies designing resilient RESTful APIs, high-performance cross-platform mobile apps, and scalable web applications across Node.js, Express, NestJS, React Native, and Next.js.",
       highlight: "5 Years Experience • WebiWork Technologies • Indore, India",
-      resumePdf: "resume.pdf",
-      resumeLabel: "Download Resume",
+      resumePdf: "fullstack_mobile_developer_resume.pdf",
+      resumeLabel: "Download Full-Stack & Mobile Resume (PDF)",
       skillsCategory: [
         {
           name: "Backend & APIs",
@@ -323,6 +323,7 @@ window.PORTFOLIO_DATA = {
     linkedin: "https://linkedin.com/in/singhjitendrakushwah",
     github: "https://github.com/singhjitendrakushwah",
     resumes: [
+      { label: "Full-Stack & Mobile Engineer Resume (PDF)", filename: "fullstack_mobile_developer_resume.pdf" },
       { label: "Backend Developer Resume (PDF)", filename: "backend_developer_resume.pdf" },
       { label: "React Native Developer Resume (PDF)", filename: "react_native_developer_resume.pdf" },
       { label: "MERN Stack Developer Resume (PDF)", filename: "mern_stack_developer_resume.pdf" },
