@@ -3,101 +3,365 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Portfolio — projects, experience, and contact." />
-    <title>Portfolio</title>
+    <meta
+      name="description"
+      content="Jitendra Kushwah — Senior Software Engineer with ~5 years of experience in Backend Engineering, React Native Mobile Development, and Full-Stack MERN / Next.js architecture."
+    />
+    <title>Jitendra Kushwah — Senior Software Engineer | Portfolio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
+
     <header class="site-header">
       <div class="wrap header-inner">
-        <a class="logo" href="#" data-site-title>Portfolio</a>
+        <a class="logo" href="#top">
+          <span class="logo-mark">JK</span>
+          <span class="logo-text">Jitendra Kushwah</span>
+        </a>
+
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
-          <span class="sr-only">Menu</span>
+          <span class="sr-only">Toggle navigation</span>
           <span class="nav-toggle-bar"></span>
         </button>
+
         <nav id="site-nav" class="site-nav" aria-label="Primary">
-          <ul class="nav-list"></ul>
+          <ul class="nav-list">
+            <li><a href="#top">Overview</a></li>
+            <li><a href="#specializations">Domains</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
         </nav>
+
+        <div class="header-cta-group">
+          <div class="resume-dropdown">
+            <button class="btn btn-sm btn-outline dropdown-toggle" type="button" id="resumeDropdownBtn" aria-expanded="false">
+              <span>📄 Resume</span>
+              <svg class="chevron-icon" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="dropdown-menu" id="resumeDropdownMenu">
+              <a href="backend_developer_resume.pdf" target="_blank" class="dropdown-item">
+                <strong>Backend Developer</strong>
+                <span>Node.js, Express, NestJS, Redis</span>
+              </a>
+              <a href="react_native_developer_resume.pdf" target="_blank" class="dropdown-item">
+                <strong>React Native Developer</strong>
+                <span>iOS & Android, Track Player, MMKV</span>
+              </a>
+              <a href="mern_stack_developer_resume.pdf" target="_blank" class="dropdown-item">
+                <strong>MERN Stack Developer</strong>
+                <span>MongoDB, React, Next.js, BullMQ</span>
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </header>
 
     <main id="main">
+      <!-- HERO SECTION -->
       <section class="hero" id="top" aria-labelledby="hero-title">
-        <div class="wrap hero-grid">
-          <div class="hero-copy">
-            <p class="eyebrow" data-hero-eyebrow></p>
-            <h1 id="hero-title" data-hero-title></h1>
-            <p class="hero-tagline" data-hero-tagline></p>
-            <div class="hero-actions">
-              <a class="btn btn-primary" data-hero-primary href="#contact"></a>
-              <a class="btn btn-ghost" data-hero-secondary href="#projects"></a>
+        <div class="wrap">
+          <!-- TRACK SWITCHER PILLS -->
+          <div class="track-switcher-container">
+            <span class="track-switcher-label">Select Specialization View:</span>
+            <div class="track-pills" role="tablist" aria-label="Specialization Filter">
+              <button class="track-pill active" data-track="all" role="tab" aria-selected="true">
+                <span class="pill-icon">🌐</span> All Work (Full-Stack)
+              </button>
+              <button class="track-pill" data-track="backend" role="tab" aria-selected="false">
+                <span class="pill-icon">⚙️</span> Backend Engineering
+              </button>
+              <button class="track-pill" data-track="mobile" role="tab" aria-selected="false">
+                <span class="pill-icon">📱</span> React Native & Mobile
+              </button>
+              <button class="track-pill" data-track="mern" role="tab" aria-selected="false">
+                <span class="pill-icon">💻</span> MERN Stack & Next.js
+              </button>
             </div>
           </div>
-          <div class="hero-card" aria-hidden="true">
-            <div class="hero-card-inner">
-              <span class="hero-accent"></span>
-              <p class="hero-card-label">Now</p>
-              <p class="hero-card-text" data-hero-highlight></p>
+
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <div class="eyebrow-wrap">
+                <span class="status-indicator"></span>
+                <p class="eyebrow" data-hero-badge></p>
+              </div>
+              <h1 id="hero-title" class="hero-name" data-hero-title>Jitendra Kushwah</h1>
+              <p class="hero-subtitle" data-hero-subtitle></p>
+              <p class="hero-tagline" data-hero-tagline></p>
+              
+              <div class="hero-actions">
+                <a class="btn btn-primary" id="heroResumeBtn" href="resume.pdf" target="_blank">
+                  <span id="heroResumeLabel">Download Resume (PDF)</span>
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 2V11M8 11L4.5 7.5M8 11L11.5 7.5M2 14H14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+                <a class="btn btn-ghost" href="#projects">Explore Projects ↓</a>
+                <a class="btn btn-ghost" href="#contact">Get in Touch</a>
+              </div>
+            </div>
+
+            <div class="hero-card" aria-hidden="true">
+              <div class="hero-card-inner">
+                <div class="hero-card-header">
+                  <span class="pulse-dot"></span>
+                  <p class="hero-card-status">Currently Employed</p>
+                </div>
+                <h3 class="hero-card-company">WebiWork Technologies</h3>
+                <p class="hero-card-tenure">January 2022 – Present (~5 Years)</p>
+                <div class="hero-card-divider"></div>
+                <div class="hero-card-detail">
+                  <span class="detail-label">Location</span>
+                  <span class="detail-val">Indore, MP, India</span>
+                </div>
+                <div class="hero-card-detail">
+                  <span class="detail-label">Core Focus</span>
+                  <span class="detail-val" data-hero-highlight></span>
+                </div>
+                <div class="hero-card-detail">
+                  <span class="detail-label">Open To</span>
+                  <span class="detail-val">Senior Roles (Indore / Remote / Hybrid)</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="section" id="about" data-section="about">
+      <!-- 3 SPECIALIZATIONS / DOMAINS SECTION -->
+      <section class="section section-alt" id="specializations">
+        <div class="wrap">
+          <div class="section-header">
+            <span class="section-eyebrow">Engineering Pillars</span>
+            <h2 class="section-title">Three Core Domains of Expertise</h2>
+            <p class="section-lead">
+              Progressed through WebiWork Technologies delivering production software across backend systems, mobile apps, and full-stack web platforms.
+            </p>
+          </div>
+
+          <div class="specialization-grid">
+            <article class="spec-card" data-spec="backend">
+              <div class="spec-icon">⚙️</div>
+              <h3>Backend Engineering & Cloud APIs</h3>
+              <p>High-throughput RESTful APIs, asynchronous job queues, and robust data persistence across SQL and NoSQL engines.</p>
+              <ul class="spec-bullets">
+                <li>Node.js, Express.js & NestJS modular architectures</li>
+                <li>BullMQ worker queues & Redis caching strategies</li>
+                <li>MongoDB (Mongoose), PostgreSQL (Prisma), MySQL (TypeORM)</li>
+                <li>AWS S3 presigned URLs & Stripe/Razorpay payment webhooks</li>
+              </ul>
+              <button class="spec-switch-btn" type="button" data-switch="backend">Filter Profile by Backend →</button>
+            </article>
+
+            <article class="spec-card" data-spec="mobile">
+              <div class="spec-icon">📱</div>
+              <h3>React Native Cross-Platform Mobile</h3>
+              <p>Production iOS and Android applications with native media streaming, offline-first caching, and custom native bridges.</p>
+              <ul class="spec-bullets">
+                <li>React Native bare workflow (v0.71–0.85) with React 18/19</li>
+                <li>Background audio playback with react-native-track-player</li>
+                <li>High-speed local caching using react-native-mmkv</li>
+                <li>Native speech-to-text module bridging in Swift & Kotlin</li>
+              </ul>
+              <button class="spec-switch-btn" type="button" data-switch="mobile">Filter Profile by Mobile →</button>
+            </article>
+
+            <article class="spec-card" data-spec="mern">
+              <div class="spec-icon">💻</div>
+              <h3>Full-Stack MERN & Next.js Architecture</h3>
+              <p>End-to-end web applications combining normalized database schemas, modular Express/NestJS APIs, and Next.js frontends.</p>
+              <ul class="spec-bullets">
+                <li>Next.js (App & Pages Router) with SSR and SSG for SEO</li>
+                <li>Centralized state management with Redux Toolkit & Zustand</li>
+                <li>Real-time bidirectional messaging via Socket.io WebSockets</li>
+                <li>Document proofing integration via PDFTron WebViewer</li>
+              </ul>
+              <button class="spec-switch-btn" type="button" data-switch="mern">Filter Profile by MERN →</button>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- SKILLS SECTION -->
+      <section class="section" id="skills">
+        <div class="wrap">
+          <div class="section-header">
+            <span class="section-eyebrow">Technical Competencies</span>
+            <h2 class="section-title" id="skillsHeading">Technical Skills Matrix</h2>
+            <p class="section-lead" id="skillsLead">
+              Grounded, interview-tested technologies used in real production deployments.
+            </p>
+          </div>
+
+          <div class="skills-category-grid" id="skillsContainer"></div>
+        </div>
+      </section>
+
+      <!-- PROJECTS SECTION -->
+      <section class="section section-alt" id="projects">
+        <div class="wrap">
+          <div class="section-header">
+            <span class="section-eyebrow">Production Work</span>
+            <h2 class="section-title">Selected Engineering Projects</h2>
+            <p class="section-lead">
+              Real-world client and enterprise platforms delivered during ~5 years at WebiWork Technologies.
+            </p>
+          </div>
+
+          <div class="project-filter-bar">
+            <span class="filter-label">Filter Projects:</span>
+            <div class="project-filter-pills" id="projectFilterPills">
+              <button class="filter-pill active" data-filter="all">All Projects (8)</button>
+              <button class="filter-pill" data-filter="backend">Backend & APIs</button>
+              <button class="filter-pill" data-filter="mobile">React Native Mobile</button>
+              <button class="filter-pill" data-filter="mern">MERN & Next.js</button>
+            </div>
+          </div>
+
+          <div class="project-grid" id="projectsGrid"></div>
+        </div>
+      </section>
+
+      <!-- EXPERIENCE SECTION -->
+      <section class="section" id="experience">
+        <div class="wrap">
+          <div class="section-header">
+            <span class="section-eyebrow">Career Progression</span>
+            <h2 class="section-title">Professional Experience</h2>
+            <p class="section-lead">
+              ~5 Years of continuous technical impact, starting as Associate Developer and rising to Senior Developer.
+            </p>
+          </div>
+
+          <div class="experience-timeline" id="experienceTimeline"></div>
+        </div>
+      </section>
+
+      <!-- EDUCATION SECTION -->
+      <section class="section section-alt" id="education">
         <div class="wrap narrow">
-          <h2 class="section-title" data-about-heading></h2>
-          <div class="prose" data-about-body></div>
+          <div class="section-header text-center">
+            <span class="section-eyebrow">Academic Foundation</span>
+            <h2 class="section-title">Education</h2>
+          </div>
+
+          <div class="education-card">
+            <div class="education-icon">🎓</div>
+            <div class="education-details">
+              <h3>Bachelor of Engineering (B.E.) in Computer Software Engineering</h3>
+              <p class="education-inst">Sri Aurobindo Institute of Technology, Indore, MP, India</p>
+              <p class="education-years">2015 – 2019</p>
+              <p class="education-notes">
+                Rigorous four-year engineering foundation in Data Structures, Algorithms, Relational Database Management Systems (RDBMS), Operating Systems, and Object-Oriented Software Design.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section class="section section-alt" id="skills" data-section="skills">
+      <!-- CONTACT & RESUME SECTION -->
+      <section class="section cta-section" id="contact">
         <div class="wrap">
-          <h2 class="section-title" data-skills-heading></h2>
-          <ul class="skill-grid" data-skills-list></ul>
-        </div>
-      </section>
+          <div class="contact-grid">
+            <div class="contact-info">
+              <span class="section-eyebrow">Get in Touch</span>
+              <h2 class="section-title">Let's Discuss Opportunities</h2>
+              <p class="cta-text">
+                Available for Senior Backend, React Native, and Full-Stack MERN roles. Open to opportunities based in Indore, fully remote, or outstation roles with flexible arrangements.
+              </p>
 
-      <section class="section" id="projects" data-section="projects">
-        <div class="wrap">
-          <h2 class="section-title" data-projects-heading></h2>
-          <div class="project-grid" data-projects></div>
-        </div>
-      </section>
+              <div class="contact-links-list">
+                <a href="mailto:jitendrakushwahsingh@gmail.com" class="contact-link-item">
+                  <span class="link-icon">✉️</span>
+                  <div>
+                    <span class="link-label">Email</span>
+                    <span class="link-value">jitendrakushwahsingh@gmail.com</span>
+                  </div>
+                </a>
+                <a href="tel:+919009355417" class="contact-link-item">
+                  <span class="link-icon">📞</span>
+                  <div>
+                    <span class="link-label">Phone</span>
+                    <span class="link-value">+91 9009355417</span>
+                  </div>
+                </a>
+                <div class="contact-link-item">
+                  <span class="link-icon">📍</span>
+                  <div>
+                    <span class="link-label">Location</span>
+                    <span class="link-value">Indore, Madhya Pradesh, India</span>
+                  </div>
+                </div>
+                <a href="https://linkedin.com/in/singhjitendrakushwah" target="_blank" rel="noopener noreferrer" class="contact-link-item">
+                  <span class="link-icon">💼</span>
+                  <div>
+                    <span class="link-label">LinkedIn</span>
+                    <span class="link-value">linkedin.com/in/singhjitendrakushwah</span>
+                  </div>
+                </a>
+                <a href="https://github.com/singhjitendrakushwah" target="_blank" rel="noopener noreferrer" class="contact-link-item">
+                  <span class="link-icon">🐙</span>
+                  <div>
+                    <span class="link-label">GitHub</span>
+                    <span class="link-value">github.com/singhjitendrakushwah</span>
+                  </div>
+                </a>
+              </div>
+            </div>
 
-      <section class="section section-alt" id="experience" data-section="experience">
-        <div class="wrap">
-          <h2 class="section-title" data-experience-heading></h2>
-          <ol class="timeline" data-experience></ol>
-        </div>
-      </section>
+            <div class="resume-download-card">
+              <h3>Download Tailored Resumes</h3>
+              <p>ATS-optimized, 2-page resumes formatted for each specialization:</p>
 
-      <section class="section" id="education" data-section="education">
-        <div class="wrap narrow">
-          <h2 class="section-title" data-education-heading></h2>
-          <ul class="education-list" data-education></ul>
-        </div>
-      </section>
+              <div class="resume-button-stack">
+                <a href="backend_developer_resume.pdf" target="_blank" class="resume-btn-item">
+                  <div class="btn-item-text">
+                    <strong>Backend Developer Resume</strong>
+                    <span>Node.js, Express, NestJS, BullMQ, Redis, DBs</span>
+                  </div>
+                  <span class="btn-download-icon">PDF ↓</span>
+                </a>
 
-      <section class="section cta-section" id="contact" data-section="contact">
-        <div class="wrap narrow cta-inner">
-          <h2 class="section-title" data-contact-heading></h2>
-          <p class="cta-text" data-contact-lead></p>
-          <ul class="contact-list" data-contact-links></ul>
+                <a href="react_native_developer_resume.pdf" target="_blank" class="resume-btn-item">
+                  <div class="btn-item-text">
+                    <strong>React Native Developer Resume</strong>
+                    <span>iOS, Android, Track Player, MMKV, Notifee</span>
+                  </div>
+                  <span class="btn-download-icon">PDF ↓</span>
+                </a>
+
+                <a href="mern_stack_developer_resume.pdf" target="_blank" class="resume-btn-item">
+                  <div class="btn-item-text">
+                    <strong>MERN Stack Developer Resume</strong>
+                    <span>MongoDB, Express, React, Next.js (SSR/SSG)</span>
+                  </div>
+                  <span class="btn-download-icon">PDF ↓</span>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
       <div class="wrap footer-inner">
-        <p data-footer-copy></p>
-        <p class="footer-note">Built for <a href="https://pages.github.com/">GitHub Pages</a>.</p>
+        <p>© 2026 Jitendra Kushwah. All rights reserved.</p>
+        <p class="footer-note">Hosted with pride on <a href="https://pages.github.com/" target="_blank" rel="noopener noreferrer">GitHub Pages</a>.</p>
       </div>
     </footer>
 

@@ -2,198 +2,309 @@
   const data = window.PORTFOLIO_DATA;
   if (!data) return;
 
-  document.title = data.meta.title;
-  const metaDesc = document.querySelector('meta[name="description"]');
-  if (metaDesc && data.meta.description) {
-    metaDesc.setAttribute("content", data.meta.description);
+  // Track state: 'all' | 'backend' | 'mobile' | 'mern'
+  let currentTrack = getInitialTrack();
+  let currentProjectFilter = currentTrack;
+
+  // Initialize UI
+  initNav();
+  initResumeDropdown();
+  initTrackSwitcher();
+  initProjectFilters();
+  initDomainCardClickers();
+  applyTrack(currentTrack, false);
+
+  function getInitialTrack() {
+    const params = new URLSearchParams(window.location.search);
+    const trackParam = (params.get("track") || "").toLowerCase();
+    if (trackParam === "backend" || trackParam === "mobile" || trackParam === "react-native") {
+      return trackParam === "react-native" ? "mobile" : trackParam;
+    }
+    if (trackParam === "mern" || trackParam === "fullstack") {
+      return "mern";
+    }
+    return "all";
   }
 
-  const titleEl = document.querySelector("[data-site-title]");
-  if (titleEl) titleEl.textContent = data.site.title;
+  function applyTrack(trackId, updateUrl = true) {
+    if (!data.tracks[trackId]) trackId = "all";
+    currentTrack = trackId;
+    currentProjectFilter = trackId;
 
-  const nav = document.querySelector(".nav-list");
-  if (nav && data.nav) {
-    nav.innerHTML = data.nav
-      .map(
-        (item) =>
-          `<li><a href="${item.href}">${escapeHtml(item.label)}</a></li>`
-      )
-      .join("");
-  }
+    const trackData = data.tracks[trackId];
 
-  setText("[data-hero-eyebrow]", data.hero.eyebrow);
-  setText("[data-hero-title]", data.hero.title);
-  setText("[data-hero-tagline]", data.hero.tagline);
-  setText("[data-hero-highlight]", data.hero.highlight);
+    // 1. Update Title and Meta
+    if (trackId === "all") {
+      document.title = data.meta.title;
+    } else {
+      document.title = `${data.site.title} — ${trackData.title} | Portfolio`;
+    }
 
-  const primary = document.querySelector("[data-hero-primary]");
-  const secondary = document.querySelector("[data-hero-secondary]");
-  if (primary && data.hero.primaryCta) {
-    primary.textContent = data.hero.primaryCta.label;
-    primary.href = data.hero.primaryCta.href;
-  }
-  if (secondary && data.hero.secondaryCta) {
-    secondary.textContent = data.hero.secondaryCta.label;
-    secondary.href = data.hero.secondaryCta.href;
-  }
+    // 2. Update Hero Elements
+    setText("[data-hero-badge]", trackData.badge);
+    setText("[data-hero-subtitle]", trackData.subtitle);
+    setText("[data-hero-tagline]", trackData.tagline);
+    setText("[data-hero-highlight]", trackData.highlight);
 
-  setText("[data-about-heading]", data.about.heading);
-  const aboutBody = document.querySelector("[data-about-body]");
-  if (aboutBody && data.about.paragraphs) {
-    aboutBody.innerHTML = data.about.paragraphs
-      .map((p) => `<p>${escapeHtml(p)}</p>`)
-      .join("");
-  }
+    const resumeBtn = document.getElementById("heroResumeBtn");
+    const resumeLabel = document.getElementById("heroResumeLabel");
+    if (resumeBtn && resumeLabel) {
+      resumeBtn.href = trackData.resumePdf;
+      resumeLabel.textContent = trackData.resumeLabel;
+    }
 
-  setText("[data-skills-heading]", data.skills.heading);
-  const skillsList = document.querySelector("[data-skills-list]");
-  if (skillsList && data.skills.items) {
-    skillsList.innerHTML = data.skills.items
-      .map((s) => `<li>${escapeHtml(s)}</li>`)
-      .join("");
-  }
-
-  setText("[data-projects-heading]", data.projects.heading);
-  const projectsEl = document.querySelector("[data-projects]");
-  if (projectsEl && data.projects.items) {
-    projectsEl.innerHTML = data.projects.items.map(renderProject).join("");
-  }
-
-  setText("[data-experience-heading]", data.experience.heading);
-  const expEl = document.querySelector("[data-experience]");
-  if (expEl && data.experience.items) {
-    expEl.innerHTML = data.experience.items.map(renderExperience).join("");
-  }
-
-  setText("[data-education-heading]", data.education.heading);
-  const eduEl = document.querySelector("[data-education]");
-  if (eduEl && data.education.items) {
-    eduEl.innerHTML = data.education.items.map(renderEducation).join("");
-  }
-
-  setText("[data-contact-heading]", data.contact.heading);
-  setText("[data-contact-lead]", data.contact.lead);
-  const contactLinks = document.querySelector("[data-contact-links]");
-  if (contactLinks && data.contact.links) {
-    contactLinks.innerHTML = data.contact.links
-      .map(
-        (l) =>
-          `<li><a href="${escapeAttr(l.href)}" ${
-            l.external ? 'rel="noopener noreferrer"' : ""
-          }>${escapeHtml(l.label)}</a></li>`
-      )
-      .join("");
-  }
-
-  setText("[data-footer-copy]", data.footer.copy);
-
-  initNav(data.nav);
-  initScrollSpy();
-})();
-
-function setText(sel, text) {
-  const el = document.querySelector(sel);
-  if (el && text != null) el.textContent = text;
-}
-
-function escapeHtml(str) {
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
-function escapeAttr(str) {
-  return String(str).replace(/"/g, "&quot;");
-}
-
-function renderProject(p) {
-  const tags = (p.tags || [])
-    .map((t) => `<span>${escapeHtml(t)}</span>`)
-    .join("");
-  const links = (p.links || [])
-    .map(
-      (l) =>
-        `<a href="${escapeAttr(l.href)}" rel="noopener noreferrer">${escapeHtml(
-          l.label
-        )}</a>`
-    )
-    .join("");
-  return `
-    <article class="project-card">
-      <h3>${escapeHtml(p.title)}</h3>
-      <p>${escapeHtml(p.description)}</p>
-      ${tags ? `<div class="project-tags">${tags}</div>` : ""}
-      ${links ? `<div class="project-links">${links}</div>` : ""}
-    </article>
-  `;
-}
-
-function renderExperience(item) {
-  const bullets = (item.highlights || [])
-    .map((b) => `<li>${escapeHtml(b)}</li>`)
-    .join("");
-  return `
-    <li class="timeline-item">
-      <div class="timeline-meta">${escapeHtml(item.dates)}</div>
-      <div class="timeline-body">
-        <h3>${escapeHtml(item.company)}</h3>
-        <p class="role">${escapeHtml(item.role)}</p>
-        ${bullets ? `<ul>${bullets}</ul>` : ""}
-      </div>
-    </li>
-  `;
-}
-
-function renderEducation(item) {
-  return `
-    <li>
-      <strong>${escapeHtml(item.school)}</strong>
-      <span>${escapeHtml(item.detail)}</span>
-    </li>
-  `;
-}
-
-function initNav(navItems) {
-  const toggle = document.querySelector(".nav-toggle");
-  const panel = document.getElementById("site-nav");
-  if (toggle && panel) {
-    toggle.addEventListener("click", () => {
-      const open = !panel.classList.contains("is-open");
-      panel.classList.toggle("is-open", open);
-      toggle.setAttribute("aria-expanded", String(open));
+    // 3. Update Track Switcher Active Pill
+    document.querySelectorAll(".track-pill").forEach((pill) => {
+      const pTrack = pill.getAttribute("data-track");
+      const isActive = pTrack === trackId;
+      pill.classList.toggle("active", isActive);
+      pill.setAttribute("aria-selected", String(isActive));
     });
-    panel.querySelectorAll("a").forEach((a) => {
-      a.addEventListener("click", () => {
-        panel.classList.remove("is-open");
-        toggle.setAttribute("aria-expanded", "false");
+
+    // 4. Update Domain Cards Active Highlight
+    document.querySelectorAll(".spec-card").forEach((card) => {
+      const spec = card.getAttribute("data-spec");
+      card.classList.toggle("active-spec", spec === trackId);
+    });
+
+    // 5. Render Skills for Current Track
+    renderSkills(trackData.skillsCategory);
+
+    // 6. Update Project Filter Bar & Render Projects
+    updateProjectFilterPills(trackId);
+    renderProjects(trackId);
+
+    // 7. Render Experience Timeline
+    renderExperience(trackId);
+
+    // 8. Update URL Query Param (cleanly without page reload)
+    if (updateUrl) {
+      const url = new URL(window.location.href);
+      if (trackId === "all") {
+        url.searchParams.delete("track");
+      } else {
+        url.searchParams.set("track", trackId);
+      }
+      window.history.replaceState({ track: trackId }, "", url.toString());
+    }
+  }
+
+  function renderSkills(categories) {
+    const container = document.getElementById("skillsContainer");
+    if (!container) return;
+
+    if (!categories || categories.length === 0) {
+      container.innerHTML = "";
+      return;
+    }
+
+    container.innerHTML = categories
+      .map(
+        (cat) => `
+        <div class="skill-category-card">
+          <h3 class="skill-category-title">${escapeHtml(cat.name)}</h3>
+          <ul class="skill-tag-list">
+            ${cat.skills.map((s) => `<li class="skill-tag">${escapeHtml(s)}</li>`).join("")}
+          </ul>
+        </div>
+      `
+      )
+      .join("");
+  }
+
+  function renderProjects(filter) {
+    const container = document.getElementById("projectsGrid");
+    if (!container) return;
+
+    let list = data.projects;
+    if (filter && filter !== "all") {
+      list = data.projects.filter((p) => p.category.includes(filter));
+    }
+
+    if (list.length === 0) {
+      container.innerHTML = `<p class="no-projects">No projects found for this category.</p>`;
+      return;
+    }
+
+    container.innerHTML = list
+      .map((p) => {
+        const isFeatured = p.featured;
+        const highlightsHtml = (p.highlights || [])
+          .map((h) => `<li>${escapeHtml(h)}</li>`)
+          .join("");
+        const tagsHtml = (p.tags || [])
+          .map((t) => `<span class="proj-badge">${escapeHtml(t)}</span>`)
+          .join("");
+
+        return `
+          <article class="project-card ${isFeatured ? "featured-card" : ""}" data-category="${p.category.join(" ")}">
+            <div class="project-card-header">
+              ${isFeatured ? `<span class="featured-badge">Key Production Project</span>` : ""}
+              <h3 class="project-title">${escapeHtml(p.title)}</h3>
+              <p class="project-tagline">${escapeHtml(p.tagline)}</p>
+            </div>
+            <p class="project-desc">${escapeHtml(p.description)}</p>
+            ${highlightsHtml ? `<ul class="project-highlights">${highlightsHtml}</ul>` : ""}
+            <div class="project-tags-wrap">${tagsHtml}</div>
+          </article>
+        `;
+      })
+      .join("");
+  }
+
+  function renderExperience(trackId) {
+    const container = document.getElementById("experienceTimeline");
+    if (!container || !data.experience) return;
+
+    const exp = data.experience[0];
+    if (!exp) return;
+
+    container.innerHTML = `
+      <div class="company-card">
+        <div class="company-header">
+          <div>
+            <h3 class="company-name">${escapeHtml(exp.company)}</h3>
+            <p class="company-meta">${escapeHtml(exp.location)} • <span class="tenure-badge">${escapeHtml(exp.period)}</span></p>
+          </div>
+          <span class="company-growth-tag">5 Years Continuous Progression</span>
+        </div>
+        <p class="company-overview">${escapeHtml(exp.overview)}</p>
+
+        <div class="roles-flow">
+          ${exp.roles
+            .map(
+              (r) => `
+            <div class="role-node">
+              <div class="role-marker"></div>
+              <div class="role-content">
+                <div class="role-header-line">
+                  <h4 class="role-title">${escapeHtml(r.title)}</h4>
+                  <span class="role-period">${escapeHtml(r.period)}</span>
+                </div>
+                <p class="role-focus">${escapeHtml(r.focus)}</p>
+                <ul class="role-bullets">
+                  ${r.bullets.map((b) => `<li>${escapeHtml(b)}</li>`).join("")}
+                </ul>
+              </div>
+            </div>
+          `
+            )
+            .join("")}
+        </div>
+      </div>
+    `;
+  }
+
+  function initTrackSwitcher() {
+    document.querySelectorAll(".track-pill").forEach((pill) => {
+      pill.addEventListener("click", () => {
+        const track = pill.getAttribute("data-track");
+        applyTrack(track, true);
       });
     });
   }
 
-  const ids = (navItems || []).map((n) => n.href.replace("#", "")).filter(Boolean);
-  const sections = ids
-    .map((id) => document.getElementById(id))
-    .filter(Boolean);
-
-  function updateCurrent() {
-    const y = window.scrollY + 120;
-    let current = ids[0];
-    for (const sec of sections) {
-      if (sec && sec.offsetTop <= y) current = sec.id;
-    }
-    document.querySelectorAll(".site-nav a").forEach((a) => {
-      const match = a.getAttribute("href") === `#${current}`;
-      if (match) a.setAttribute("aria-current", "page");
-      else a.removeAttribute("aria-current");
+  function initDomainCardClickers() {
+    document.querySelectorAll("[data-switch]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const track = btn.getAttribute("data-switch");
+        applyTrack(track, true);
+        const topEl = document.getElementById("top");
+        if (topEl) topEl.scrollIntoView({ behavior: "smooth" });
+      });
     });
   }
 
-  window.addEventListener("scroll", updateCurrent, { passive: true });
-  updateCurrent();
-}
+  function initProjectFilters() {
+    const pills = document.querySelectorAll("#projectFilterPills .filter-pill");
+    pills.forEach((pill) => {
+      pill.addEventListener("click", () => {
+        const filter = pill.getAttribute("data-filter");
+        currentProjectFilter = filter;
+        updateProjectFilterPills(filter);
+        renderProjects(filter);
+      });
+    });
+  }
 
-function initScrollSpy() {
-  /* scroll-margin on .section handles offset; nav current set in initNav */
-}
+  function updateProjectFilterPills(activeFilter) {
+    document.querySelectorAll("#projectFilterPills .filter-pill").forEach((p) => {
+      const f = p.getAttribute("data-filter");
+      p.classList.toggle("active", f === activeFilter);
+    });
+  }
+
+  function initResumeDropdown() {
+    const btn = document.getElementById("resumeDropdownBtn");
+    const menu = document.getElementById("resumeDropdownMenu");
+    if (!btn || !menu) return;
+
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isOpen = menu.classList.contains("show");
+      menu.classList.toggle("show", !isOpen);
+      btn.setAttribute("aria-expanded", String(!isOpen));
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!menu.contains(e.target) && e.target !== btn) {
+        menu.classList.remove("show");
+        btn.setAttribute("aria-expanded", "false");
+      }
+    });
+  }
+
+  function initNav() {
+    const toggle = document.querySelector(".nav-toggle");
+    const nav = document.getElementById("site-nav");
+    if (toggle && nav) {
+      toggle.addEventListener("click", () => {
+        const open = !nav.classList.contains("is-open");
+        nav.classList.toggle("is-open", open);
+        toggle.setAttribute("aria-expanded", String(open));
+      });
+
+      nav.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => {
+          nav.classList.remove("is-open");
+          toggle.setAttribute("aria-expanded", "false");
+        });
+      });
+    }
+
+    // ScrollSpy
+    const sections = ["top", "specializations", "skills", "projects", "experience", "education", "contact"]
+      .map((id) => document.getElementById(id))
+      .filter(Boolean);
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        const y = window.scrollY + 140;
+        let current = "top";
+        for (const sec of sections) {
+          if (sec && sec.offsetTop <= y) current = sec.id;
+        }
+        document.querySelectorAll(".site-nav a").forEach((a) => {
+          const match = a.getAttribute("href") === `#${current}`;
+          if (match) a.setAttribute("aria-current", "page");
+          else a.removeAttribute("aria-current");
+        });
+      },
+      { passive: true }
+    );
+  }
+
+  function setText(sel, text) {
+    const el = document.querySelector(sel);
+    if (el && text != null) el.textContent = text;
+  }
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+})();
