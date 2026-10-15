@@ -265,9 +265,9 @@ window.PORTFOLIO_DATA = {
       period: "January 2022 – Present (~5 Years Total)",
       company: "WebiWork Technologies Pvt. Ltd.",
       location: "Indore, MP, India",
-      role: "Senior Developer (Progressive Growth from Associate Developer)",
+      role: "Senior Developer (Progressive Growth from Junior Developer)",
       overview:
-        "Promoted progressively from Associate Developer to Developer and Senior Developer. Spearheaded backend architecture, cross-platform mobile apps, and full-stack MERN engineering across international client platforms.",
+        "Promoted progressively from Junior Developer to Developer and Senior Developer. Spearheaded backend architecture, cross-platform mobile apps, and full-stack MERN engineering across international client platforms.",
       roles: [
         {
           title: "Senior Developer",
@@ -292,7 +292,7 @@ window.PORTFOLIO_DATA = {
           ],
         },
         {
-          title: "Associate Developer",
+          title: "Junior Developer",
           period: "January 2022 – Early 2023",
           focus: "Foundational REST APIs, database schemas, and e-commerce mobile screens.",
           bullets: [
